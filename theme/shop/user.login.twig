@@ -1,0 +1,58 @@
+{% extends 'main.twig' %}
+
+{% block title %}Login | {{ parent() }}{% endblock %}
+
+{% block page %}
+    {% include 'common/breadcrumbs.twig' with {
+        'title': 'Login'
+    } %}
+<!-- Start Account Area -->
+
+    <div class="row justify-content-center mt-50">
+        <div class="col-8">
+            <div class="login-register-content">
+                <div class="login-register-title mb-30">
+                    <h2>Login</h2>
+                    <p>Welcome back! Please enter your username and password to login.</p>
+                </div>
+                <div class="login-register-style login-register-pr">
+                    <form method="post">
+                        <div class="login-register-input">
+                            {% if identifier == 'email' %}
+                                {% include 'mixin/form.twig' with {
+                                    'label': 'E-Mail',
+                                    'type': 'email',
+                                    'name': 'email',
+                                } %}
+                            {% elseif identifier == 'username' %}
+                                {% include 'mixin/form.twig' with {
+                                    'label': 'Username',
+                                    'type': 'text',
+                                    'name': 'username',
+                                } %}
+                            {% else %}
+                                {% include 'mixin/form.twig' with {
+                                    'label': 'Phone',
+                                    'type': 'tel',
+                                    'name': 'phone',
+                                } %}
+                            {% endif %}
+
+                            {% include 'mixin/form.twig' with {
+                                'label': 'Password',
+                                'type': 'password',
+                                'name': 'password',
+                            } %}
+                        </div>
+                        <div class="btn-style-3 mb-30">
+                            <button class="btn" type="submit">Login</button>
+                        </div>
+                        <p class="outer-link">Don't have an account? <a href="/user/register">Register here</a></p>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- End Account Area -->
+{% endblock %}

@@ -1,0 +1,38 @@
+
+<form action="/search" method="post">
+    <div class="form-input-group tmpInput">
+        {% include 'mixin/form.twig' with {
+            'type': 'text',
+            'name': 'q',
+            'args': {
+                'required': true,
+                'value': _request.q,
+                'placeholder': 'Search',
+                'class':['form-control'],
+
+            }
+        } %}
+
+        <div class="categories-dropdown">
+            {% include 'mixin/form.twig' with {
+                'type': 'select',
+                'name': 't',
+                'args': {
+                    'selected': _request.t,
+                    'option': {
+                        '': 'All',
+                        'page': 'Pages',
+                        'publication': 'Publications',
+                        'catalog_product': 'Products'
+                    },
+                    'class':['form-control','select-dropdown']
+                }
+            } %}
+
+        </div>
+        <button type="submit" class="btn-src">
+            <i class="icon-magnifier"></i>
+        </button>
+    </div>
+</form>
+

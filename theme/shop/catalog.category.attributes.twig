@@ -1,0 +1,36 @@
+{% for attribute in category.filtres %}
+    {% set values = attribute.values(category) %}
+
+    {% if values.count() %}
+<div class="widget">
+    <div class="widget-body">
+        <!-- Start Widget -->
+        <div class="widget-categorie">
+            <h3 class="widget-title">{{ attribute.title }}</h3>
+            <ul class="list">
+                {% for value, count in values %}
+                    <div class="form-check">
+                        <input
+                           class="form-check-input"
+                           type="radio"
+                           name="{{ attribute.uuid }}"
+                           value="{{ value }}"
+                           id="{{ attribute.uuid }}-{{ value }}"
+                           onchange="(() =>
+                                   {location = '{{ non_page_path() }}{{ page ? '/' ~ page : '' }}{{ current_query(attribute.address, value|trim) }}'
+                                   })()"
+                           {{ _request[attribute.address] == value ? 'checked' : '' }}
+                        />
+                        <label class="form-check-label" for="{{ attribute.uuid }}-{{ value }}">
+                            {{ value }} ({{ count }})
+                        </label>
+                    </div>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</div>
+        <!-- End Widget -->
+    {% endif %}
+{% endfor %}
+

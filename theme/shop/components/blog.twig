@@ -1,0 +1,38 @@
+<!-- Start Blog Section Area -->
+{% set public=publication({category_uuid: '9c4c903c-c69f-4efc-825e-31a08a5a2f01'}) %}
+
+<section class="blog-area blog-style1-area">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 m-auto">
+                <div class="section-title text-center">
+                    <h4 class="subtitle">Awesome Shop</h4>
+                    <h2 class="title">From Our Blog</h2>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="swiper-container-wrap swiper-nav-style blog-slider-nav">
+                    <div class="swiper-container blog-slider-container">
+                        <div class="swiper-wrapper">
+                            <!-- Start Single Blog -->
+                            {% for item in public %}
+                                <div class="swiper-slide">
+                                    {% include item.category.template.short with {'item': item} %}
+                                </div>
+                                <!-- End Single Blog -->
+                            {% endfor %}
+                        </div>
+
+                    </div>
+                    <!-- Add Arrows -->
+                    <div class="swiper-button-next"></div>
+                    <div class="swiper-button-prev"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- End Blog Section Area -->

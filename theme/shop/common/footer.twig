@@ -1,0 +1,156 @@
+<!-- Start Footer Area -->
+<footer class="footer-area">
+    <div class="container">
+        <div class="row row-gutter-0">
+            <div class="col-12">
+                <div class="footer-top">
+                    <div class="row row-gutter-0">
+                        <div class="col-md-9">
+                            <h4 class="widget-title widget-collapsed-title collapsed" data-bs-toggle="collapse" data-bs-target="#dividerId-5">Subscribe Now</h4>
+                            <div id="dividerId-5" class="collapse widget-collapse-body">
+                                <div class="collapse-body-content">
+                                    <div class="newsletter-content-wrap">
+                                        <div class="newsletter-content">
+                                            <h2>Sign Up For Newsletters</h2>
+                                            <p>Be the First to Know. Sign up for newsletter today !</p>
+                                        </div>
+                                        <form action="/user/subscriber" method="post" class="newsletter-form">
+                                            <input class="form-control" name="email" placeholder="Email address here..." type="email">
+                                            <div class="button">
+                                                <button class="btn btn-theme">Subscribe</button>
+                                            </div>
+                                        </form>
+                                        <ul class="widget-social-icons d-block d-md-none">
+                                            {% for url, title in reference('social_network').pluck('title', 'value.url') %}
+                                                <li><a href="{{ url }}"><i class="fab fa-{{ title|lower }}"></i></a></li>
+                                            {% endfor %}
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 d-none d-md-block">
+                            <ul class="widget-social-icons">
+                                {% for url, title in reference('social_network').pluck('title', 'value.url') %}
+                                    <li><a href="{{ url }}"><i class="fab fa-{{ title|lower }}"></i></a></li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="footer-main">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3 col-md-4">
+                    <div class="widget-item">
+                        <h4 class="widget-title widget-collapsed-title collapsed" data-bs-toggle="collapse" data-bs-target="#dividerId-1">Contact Us</h4>
+                        <div id="dividerId-1" class="collapse widget-collapse-body">
+                            <div class="collapse-body-content">
+                                <div class="widget-contact-info">
+                                    <a class="footer-logo" href="/">
+                                        <img src="/resource/img/logo.jpg" alt="Logo" width="168" height="57">
+                                    </a>
+                                    <div>
+                                        {% for store in reference('store_location') %}
+                                            <div class="mt-3">
+                                                <h3>{{ store.title }}</h3>
+                                                {% if store.value.contact.phone %}
+                                                    <p class="phone">Phone:
+                                                        <a href="tel:{{ store.value.contact.phone }}">
+                                                            {{ store.value.contact.phone }}
+                                                        </a>
+                                                    </p>
+                                                {% endif %}
+                                                <p>{{ store.value.address }}</p>
+                                                <p>{{ store.value.times|replace({'\n': '<br>'})|raw }}</p>
+                                                {% if store.value.contact.email %}
+                                                    <p class="mail">
+                                                        <a href="mailto:{{ store.value.contact.email }}">{{ store.value.contact.email }}</a>
+                                                    </p>
+                                                {% endif %}
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-2">
+                    <div class="widget-item ml-80 ml-md-0">
+                        <h4 class="widget-title">Company</h4>
+                        <h4 class="widget-title widget-collapsed-title collapsed" data-bs-toggle="collapse" data-bs-target="#dividerId-2">Company</h4>
+                        <div id="dividerId-2" class="collapse widget-collapse-body">
+                            <div class="collapse-body-content">
+                                <nav class="widget-menu-wrap">
+                                    <ul class="nav-menu nav">
+                                        <li><a href="/">Delivery</a></li>
+                                        <li><a href="/about">About us</a></li>
+                                        <li><a href="/contacts">Contact us</a></li>
+                                    </ul>
+                                </nav>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-3">
+                    <div class="widget-item sm-ml-0 ml-40 ml-md-20">
+                        <h4 class="widget-title">My Account</h4>
+                        <h4 class="widget-title widget-collapsed-title collapsed" data-bs-toggle="collapse" data-bs-target="#dividerId-3">My Account</h4>
+                        <div id="dividerId-3" class="collapse widget-collapse-body">
+                            <div class="collapse-body-content">
+                                <nav class="widget-menu-wrap">
+                                    <ul class="nav-menu nav">
+                                        <li><a href="/">Legal Notice</a></li>
+                                        <li><a href="/user/profile">My Account</a></li>
+                                        <li><a href="/user/login"> Login </a></li>
+                                        <li><a href="/guestbook"> Guestbook</a></li>
+                                    </ul>
+                                </nav>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-3">
+                    <div class="widget-item ml-20 ml-md-0">
+                        <h4 class="widget-title">Products</h4>
+                        <h4 class="widget-title widget-collapsed-title collapsed" data-bs-toggle="collapse" data-bs-target="#dividerId-4">Products</h4>
+                        <div id="dividerId-4" class="collapse widget-collapse-body">
+                            <div class="collapse-body-content">
+                                <nav class="widget-menu-wrap">
+                                    <ul class="nav-menu nav">
+                                        <li><a href="/catalog">Catalog</a></li>
+                                    </ul>
+                                </nav>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <div class="container">
+            <div class="footer-bottom-content">
+                <div class="row">
+                    <div class="col-sm-7 order-1 order-sm-0">
+                        <div class="widget-copyright ">
+                            <p>
+                                <span>Work by</span>
+                                <a href="https://getwebspace.org" rel="nofollow" target="_blank">WebSpace Engine</a>
+                                <br>
+                                <span>Designed in</span>
+                                <a href="https://graygrids.com/" rel="nofollow" target="_blank">GrayGrids</a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<!--/ End Footer Area -->

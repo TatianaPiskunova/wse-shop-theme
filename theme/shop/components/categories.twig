@@ -1,0 +1,36 @@
+<!-- Start Featured Categories Area -->
+<div class="col-md-9">
+    <div class="swiper-container product-slider7-container product-items2 swiper-nav-style2 mb-sm-30">
+        <div class="swiper-wrapper">
+            {% for category in catalog_category({'parent_uuid': null}) %}
+            <div class="swiper-slide">
+                <!-- Start Product Item -->
+                <div class="product-item">
+                    <div class="product-thumb">
+                        <a href="/catalog/{{ category.address }}">
+                            <div class="images">
+                                {% include 'mixin/img.twig' with {
+                                    'src': category.images.first().public_path('middle') ?? 'http://placehold.it/105x105/',
+                                    'title': category.title,
+                                    'alt': category.title,
+                                    'style': 'height: 105px; width: 105px; object-fit: contain;'
+                                } only %}
+                            </div>
+                        </a>
+                    </div>
+                    <div class="product-info-style">
+                        <h4 class="title"><a href="/catalog/{{ category.address }}">{{ category.title }}</a></h4>
+                    </div>
+                </div>
+                <!-- End Product Item -->
+            </div>
+            {% endfor %}
+
+        </div>
+        <!-- Add Arrows -->
+        <div class="swiper-button-next"></div>
+        <div class="swiper-button-prev"></div>
+    </div>
+</div>
+
+<!-- End Features Area -->

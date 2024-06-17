@@ -1,0 +1,80 @@
+<!-- Start Home Product List -->
+{% set bestSellers = catalog_product_popular(5) %}
+{% set newProducts=catalog_product([], {'date': 'desc'}, 5,null) %}
+
+<section class="product-area product-style3-area">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 m-auto">
+                <div class="section-title text-center">
+                    <h4 class="subtitle">Awesome Shop</h4>
+                    <h2 class="title">Our Products</h2>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="product-tab-content">
+                    <ul class="nav nav-tabs " id="myTab" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link active" id="our-features-tab" data-bs-toggle="tab" data-bs-target="#our-features" type="button" role="tab" aria-controls="our-features" aria-selected="true"><img src="http://dummyimage.com/65x65/7B68EE" alt="Image" width="65" height="65">New Arrivals</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="best-sellers-tab" data-bs-toggle="tab" data-bs-target="#best-sellers" type="button" role="tab" aria-controls="best-sellers" aria-selected="false"><img src="http://dummyimage.com/65x65/9932CC" alt="Image" width="65" height="65">Best sellers</button>
+                        </li>
+                    </ul>
+
+                    <div class="tab-content" id="myTabContent">
+                        <div class="tab-pane fade show active" id="our-features" role="tabpanel" aria-labelledby="our-features-tab">
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="product">
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <div class="swiper-container-wrap swiper-nav-style product-slider3-nav">
+                                                    <div class="swiper-container product-slider3-container">
+
+                                                        <div class="swiper-wrapper">
+                                                            {% include 'catalog.category.product.slider.twig' with {'products':newProducts} %}
+                                                        </div>
+                                                    </div>
+                                                    <!-- Add Arrows -->
+                                                    <div class="swiper-button-next"></div>
+                                                    <div class="swiper-button-prev"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="best-sellers" role="tabpanel" aria-labelledby="best-sellers-tab">
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="product">
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <div class="swiper-container-wrap swiper-nav-style product-slider4-nav">
+                                                    <div class="swiper-container product-slider4-container">
+                                                        <div class="swiper-wrapper">
+                                                            {% include 'catalog.category.product.slider.twig' with {'products':bestSellers} %}
+                                                        </div>
+                                                    </div>
+                                                    <!-- Add Arrows -->
+                                                    <div class="swiper-button-next"></div>
+                                                    <div class="swiper-button-prev"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- End Home Product List -->

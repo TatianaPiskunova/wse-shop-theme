@@ -1,0 +1,71 @@
+{% extends 'main.twig' %}
+
+{% block title %}{{ category.meta.title ? category.meta.title : category.title }} | {{ parent() }}{% endblock %}
+
+{% block head %}
+    {{ parent() }}
+    <meta name="description" content="{{ category.meta.description }}">
+    <meta name="keywords" content="{{ category.meta.keywords }}">
+
+    <link rel="alternate" type="application/rss+xml" title="{{ parameter('common_title') }}"
+          href="{{ parameter('common_homepage') }}/{{ category.rss() }}">
+{% endblock %}
+
+{% block page %}
+    {% include 'common/breadcrumbs.twig' with {'title': category.meta.title ? category.meta.title : category.title} %}
+
+    <!-- Start Blog Singel Area -->
+
+    {% set public=publication({category_uuid: '9c4c903c-c69f-4efc-825e-31a08a5a2f01'}) %}
+
+    {% if category.uuid=='9c4c906a-7ad5-4c2c-bf3d-d3e4e6828d47' %}
+        {% set public=publication({category_uuid: '9c4c906a-7ad5-4c2c-bf3d-d3e4e6828d47'}) %}
+    {% endif %}
+
+    <section class="blog-area blog-grid-area">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="blog-content-area">
+                        <div class="row">
+
+                            <!--== Start Blog Post Item ==-->
+                            {% for publication in public %}
+                                <div class="col-lg-4 col-md-6 col-sm-6">
+                                    <div class="post-item2">
+                                        <div class="thumb effect-animate-flash">
+                                            <a href="/{{ publication.address }}">
+                                                {% set category = categories.firstWhere('uuid', publication.category_uuid) %}
+                                                {% include 'mixin/img.twig' with {
+                                                    'src': publication.images.first().public_path('middle') ?? category.images.first().public_path('middle') ?? '/assets/img/no_image.png',
+                                                    'alt': 'thumb',
+                                                    'style': 'display:block; height: 345px; width: 350px; object-fit: contain; object-position: center center;'
+                                                } only %}</a>
+                                        </div>
+                                        <div class="content">
+                                            <div class="post-meta"><span class="post-category">by <span
+                                                            class="category">{{ publication.user.name('short') }}</span></span><span
+                                                        class="post-date">{{ publication.date|df }}</span><span
+                                                        class="post-author"><a
+                                                            href="/{{ publication.category.address }}">{{ publication.category.title }}</a></span>
+                                            </div>
+                                            <h4 class="title"><a
+                                                        href="/{{ publication.address }}">{{ publication.title }}</a>
+                                            </h4>
+                                            <p>{{ publication.content.short|raw }}</p>
+                                            <a class="btn-link" href="/{{ publication.address }}">Read More <i
+                                                        class="fa-solid fa-angle-right"></i></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                            <!--== End Blog Post Item ==-->
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- End Blog Singel Area -->
+{% endblock %}

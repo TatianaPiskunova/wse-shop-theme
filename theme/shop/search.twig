@@ -1,0 +1,102 @@
+{% extends 'main.twig' %}
+
+{% block title %}Search | {{ parent() }}{% endblock %}
+
+{% block page %}
+    {% include 'common/breadcrumbs.twig' with {'title': 'Search'} %}
+
+    <section class="section">
+        <div class="container">
+            <form method="get">
+                <div class="row justify-content-center">
+                    <div class="col-md-7">
+                        <div class="single-form form-default">
+                            <label>Type</label>
+                            <div class="form-input form">
+                                {% include 'mixin/form.twig' with {
+                                    'type': 'select',
+                                    'name': 't',
+                                    'args': {
+                                        'selected': _request.t,
+                                        'option': {
+                                            '': 'All',
+                                            'page': 'Pages',
+                                            'publication': 'Publications',
+                                            'catalog_product': 'Products'
+                                        },
+                                    }
+                                } %}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-7">
+                        <div class="single-form form-default">
+                            <label>Query</label>
+                            <div class="form-input form">
+                                {% include 'mixin/form.twig' with {
+                                    'type': 'text',
+                                    'name': 'q',
+                                    'args': {
+                                        'required': true,
+                                        'value': _request.q,
+                                        'placeholder': 'What are we looking for?',
+                                    }
+                                } %}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="single-form button">
+                            <button class="btn" type="submit">Search</button>
+                        </div>
+                    </div>
+                </div>
+
+                {% if (_request.q or _request.query) %}
+                    {% if count %}
+                        <div class="row mt-3">
+                            <div class="col-md-12">
+                                <h5>Found results ({{ count }})</h5>
+
+                                {% for item in result %}
+                                    <div class="row my-3">
+                                        <div class="col-2 text-center">
+                                            <a href="/{{ item.address }}">
+                                                {% include 'mixin/img.twig' with {
+                                                    'src': item.images.first().public_path('middle') ?? '/assets/img/no_image.png',
+                                                    'placeholder': item.images.first().public_path('small') ?? '/assets/img/no_image.png',
+                                                    'title': item.title,
+                                                    'alt': item.title,
+                                                    'style': 'display:block; float: left; margin: 0 auto; height: 50px; width: 50px; object-fit: cover; object-position: center center;'
+                                                } only %}
+                                            </a>
+                                        </div>
+                                        <div class="col-10">
+                                            <a href="/{{ item.address }}">{{ item.title }}</a>
+
+                                            {% if item.description or item.content or item.content.short or item.meta.description %}
+                                                <p class="text-justify mb-0">{{ (item.content.short ?: item.content ?: item.description ?: item.meta.description)|striptags|u.truncate(250)|raw }}</p>
+                                            {% endif %}
+                                            {% if item.price %}
+                                                <p class="font-weight-bold">{{ item.price|format_number({fraction_digit: 2}) }}</p>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    {% else %}
+                        <div class="row mt-5">
+                            <div class="col-12 text-center">
+                                <h4>There is nothing</h4>
+                                <p>Try changing the query</p>
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endif %}
+            </form>
+        </div>
+    </section>
+{% endblock %}

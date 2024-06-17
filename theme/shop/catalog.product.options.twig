@@ -1,0 +1,22 @@
+{% if product %}
+    <!-- auto generated product options: (uuid:{{ product.uuid }}, external_id:{{ product.external_id }}) -->
+    <div style="display: none;">
+        <span data-catalog-item-attr="uuid">{{ product.uuid }}</span>
+        <span data-catalog-item-attr="title">{{ product.title }}</span>
+        <span data-catalog-item-attr="url">/catalog/{{ product.address }}</span>
+        <span data-catalog-item-attr="thumb">{{ product.images.first().public_path('middle') ?? '/assets/img/no_image.png' }}</span>
+        <span data-catalog-item-attr="vendorcode">{{ product.vendorcode }}</span>
+        <span data-catalog-item-attr="price">{{ product.price('price') }}</span>
+        <span data-catalog-item-attr="price_wholesale">{{ product.price('price_wholesale') }}</span>
+        <span data-catalog-item-attr="price_wholesale_from">{{ product.priceWholesaleFrom }}</span>
+        <span data-catalog-item-attr="price_type">{{ catalog_product_price_type() }}</span>
+        <span data-catalog-item-attr="tax">{{ product.tax }}</span>
+        <span data-catalog-item-attr="tax_included">{{ product.tax_included }}</span>
+        <span data-catalog-item-attr="quantity_step">{{ product.quantity }}</span>
+        <span data-catalog-item-attr="quantity_min">{{ product.quantityMin }}</span>
+
+        <span data-catalog-item-attr="group">{{ product.category.title }}</span>
+        <span data-catalog-item-attr="type">{{ product.type }}</span>
+    </div>
+    <!-- auto generated product options: end -->
+{% endif %}

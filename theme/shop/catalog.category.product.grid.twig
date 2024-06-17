@@ -1,0 +1,37 @@
+<!-- Start Product -->
+<div class="product-item"  data-catalog-item>
+    <div class="product-thumb">
+        <a href="/catalog/{{ product.address }}">
+            {% include 'mixin/img.twig' with {
+                'src': product.images.first().public_path('middle') ?? '/assets/img/no_image.png',
+                'title': product.title,
+                'alt': product.title,
+                'style': 'height: 288px; object-fit: contain;'
+            } only %}
+        </a>
+        {% if product.discount %}
+            <div class="ribbons">
+                <span class="ribbon ribbon-discount">$&dash;{{ product.discount }}</span>
+            </div>
+        {% endif %}
+    </div>
+    <div class="product-info">
+        <span class="category">{{ product.category.title }}</span>
+        <h4 class="title"><a href="/catalog/{{ product.address }}">{{ product.title }}</a></h4>
+        {% if product.discount %}
+            <span class="text-decoration-line-through text-secondary">${{ product.price + product.discount }}</span>
+            <span class="price">${{ product.price }}</span>
+        {% else %}
+            <span class="price">${{ product.price }}</span>
+        {% endif %}
+        <div class="content-inner">
+            <button class="btn-link" type="button" data-catalog-item-add>
+                <i class="icon-bag icons"></i> Add to cart
+            </button>
+        </div>
+    </div>
+
+    {% include 'catalog.product.options.twig' with {'categories': categories, 'product': product, 'user': user} only %}
+</div>
+
+<!-- End Product -->

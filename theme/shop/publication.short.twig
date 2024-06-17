@@ -1,0 +1,20 @@
+<div class="post-item">
+    <div class="content">
+        <div class="category"><a href="/{{ item.category.address }}">{{ item.category.title }}</a></div>
+        <h4 class="title"><a href="/{{ item.address }}">{{ item.title }}</a></h4>
+        <p>{{ item.content.short|raw }}</p>
+        <div class="meta"><span class="post-date"> {{ item.date|df }}</span></div>
+    </div>
+    <div class="thumb effect-animate-flash">
+        <a href="/{{ item.address }}">
+            {% include 'mixin/img.twig' with {
+                'src': item.images.first().public_path('middle') ?? '/assets/img/no_image.png',
+                'placeholder': item.images.first().public_path('small') ?? '/assets/img/no_image.png',
+                'title': item.title,
+                'alt': item.title,
+                'style': 'display:block; height: 350px; width: 255%; object-fit: contain; object-position: center center;'
+            } only %}
+        </a>
+    </div>
+</div>
+

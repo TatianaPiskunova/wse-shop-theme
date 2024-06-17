@@ -1,0 +1,169 @@
+{% extends 'layout.twig' %}
+
+{% block head %}
+    <meta name="description" content="{{ parameter('common_description') }}">
+    <meta name="keywords" content="{{ parameter('common_keywords') }}">
+    <link rel="canonical" href="{{ parameter('common_homepage') }}"/>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,600;0,700;0,800;1,300;1,400;1,600;1,700&display=swap" rel="stylesheet">
+
+
+    <!-- Favicon -->
+    <link href="/resource/favicon.svg" rel="shortcut icon" />
+
+    <!--== Bootstrap CSS ==-->
+    <link href="/resource/css/bootstrap.min.css" rel="stylesheet"/>
+    <!--== Ionicons CSS ==-->
+    <link href="/resource/css/ionicons.css" rel="stylesheet"/>
+    <!--== Simple Line Icons CSS ==-->
+    <link href="/resource/css/simple-line-icons.css" rel="stylesheet"/>
+    <!--== FancyBox CSS ==-->
+    <link href="/resource/css/jquery.fancybox.min.css" rel="stylesheet"/>
+    <!--== Swiper CSS ==-->
+    <link href="/resource/css/swiper.min.css" rel="stylesheet"/>
+    <!--== Main Style CSS ==-->
+    <link href="/resource/css/style.css" rel="stylesheet" />
+
+    <link href="/resource/css/fontawesome.css" rel="stylesheet" />
+    <link href="/resource/css/brands.css" rel="stylesheet" />
+    <link href="/resource/css/solid.css" rel="stylesheet" />
+
+{% endblock %}
+
+{% block body %}
+    <body>
+
+        <!--[if lte IE 9]>
+        <p class="browserupgrade">
+            You are using an <strong>outdated</strong> browser. Please
+            <a href="https://browsehappy.com/">upgrade your browser</a> to improve
+            your experience and security.
+        </p>
+        <![endif]-->
+
+{#        <!-- Preloader -->#}
+{#        <div class="preloader">#}
+{#            <div class="preloader-inner">#}
+{#                <div class="preloader-icon">#}
+{#                    <span></span>#}
+{#                    <span></span>#}
+{#                </div>#}
+{#            </div>#}
+{#        </div>#}
+{#        <!-- /End Preloader -->#}
+        <div class="wrapper home-two-wrapper">
+        {% block bodyinner %}
+            {% include 'common/header.twig' %}
+
+            {% block page %}
+                <script>
+                    window.catalog = {
+                        events: {
+                            'on:cart:add': (new_item) => {
+                                Swal.fire({
+                                    title: 'Product added to cart',
+                                    text: new_item.title + ' (x' + new_item.quantity + ') now in cart.',
+                                    icon: 'success',
+                                    showCancelButton: true,
+                                    cancelButtonText: 'Continue shopping',
+                                    cancelButtonColor: '#0167F3',
+                                    confirmButtonText: 'Checkout',
+                                    confirmButtonColor: '#081828'
+                                }).then((result) => {
+                                    if (result.value) {
+                                        location.href = '/cart';
+                                    }
+                                });
+                            },
+                            'on:cart:update': (updated_item) => {
+                                Swal.fire({
+                                    title: 'Cart updated',
+                                    text: updated_item.title + ' (x' + updated_item.quantity + ')',
+                                    icon: 'success',
+                                    showCancelButton: true,
+                                    cancelButtonText: 'Continue shopping',
+                                    cancelButtonColor: '#0167F3',
+                                    confirmButtonText: 'Checkout',
+                                    confirmButtonColor: '#081828'
+                                }).then((result) => {
+                                    if (result.value) {
+                                        location.href = '/cart';
+                                    }
+                                });
+                            }
+                        },
+
+                            // format settings
+                            format: {
+                                count: {decimalPlaces: 0, thousandsSeparator: ',', decimalSeparator: '.'}, // in item counts
+                                price: {decimalPlaces: 2, currencySymbolStart: '$',  currencySymbolEnd: '', thousandsSeparator: ',', decimalSeparator: '.'}, // in item prices and totals
+                            },
+
+                    }
+                </script>
+
+            <section class="home-slider-area slider-style2">
+                <div class="container">
+                    <div class="row row-gutter-20">
+                        {% include 'components/hero.twig' %}
+                        {% include 'components/categories.twig' %}
+                        <div class="col-md-3">
+                            <div class="category-item text-center">
+                                <div class="thumb">
+                                    <a href="/"><img src="http://placehold.it/273x168/" alt="Image" width="273" height="168"></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+                {% include 'components/special-offer.twig' %}
+                {% include 'components/products-list.twig' %}
+                {% include 'components/brands.twig' %}
+                {% include 'components/blog.twig' %}
+
+            {% endblock %}
+
+            {% include 'common/footer.twig' %}
+
+            <!-- ========================= scroll-top ========================= -->
+            <div class="scroll-to-top"><span class="ion-chevron-up"></span></div>
+        {% endblock %}
+        </div>
+
+        <!--=== Modernizr Min Js ===-->
+        <script src="/resource/js/modernizr.js"></script>
+        <!--=== jQuery Min Js ===-->
+        <script src="/resource/js/jquery-main.js"></script>
+        <!--=== jQuery Migration Min Js ===-->
+        <script src="/resource/js/jquery-migrate.js"></script>
+        <!--=== Popper Min Js ===-->
+        <script src="/resource/js/popper.min.js"></script>
+        <!--=== Bootstrap Min Js ===-->
+        <script src="/resource/js/bootstrap.min.js"></script>
+        <!--=== jquery Swiper Min Js ===-->
+        <script src="/resource/js/swiper.min.js"></script>
+        <!--=== jquery Fancybox Min Js ===-->
+        <script src="/resource/js/fancybox.min.js"></script>
+        <!--=== jquery Countdown Js ===-->
+        <script src="/resource/js/jquery.countdown.min.js"></script>
+        <!--=== jquery Zoom Min Js ===-->
+        <script src="/resource/js/jquery-zoom.min.js"></script>
+
+        <!--=== Custom Js ===-->
+        <script src="/resource/js/custom.js"></script>
+
+        <script type="text/javascript" src="/assets/js/plugin/sweetalert/sweetalert2.all.min.js"></script>
+
+
+
+        {% include 'mixin/img-script.twig' %}
+        {#{% include 'mixin/adbd.twig' %}#}
+        {#{% include 'mixin/cookies.twig' %}#}
+        {% include 'mixin/catalog.twig' %}
+        {% include 'mixin/recaptcha.twig' %}
+    </body>
+{% endblock %}

@@ -1,0 +1,32 @@
+{% if parent != null %}
+    {% set subnodes = categories.where('parent_uuid', parent) %}
+
+    {% if subnodes.count() %}
+        <!-- Start Widget -->
+        <div class="widget">
+            <h3 class="widget-title">Sub Categories</h3>
+            <ul class="list">
+                {% for node in subnodes.sortBy('order') %}
+                    <li>
+                        <a href="/catalog/{{ node.address }}">{{ node.title }}</a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+        <!-- End Widget -->
+    {% endif %}
+{% endif %}
+
+<!-- Start Widget -->
+<div class="widget">
+    <h3 class="widget-title">Main Categories</h3>
+    <ul class="list">
+        {% for node in categories.where('parent_uuid', null).sortBy('order') %}
+            <li>
+                <a href="/catalog/{{ node.address }}">{{ node.title }}</a>
+            </li>
+        {% endfor %}
+    </ul>
+</div>
+<!-- End Widget -->
+

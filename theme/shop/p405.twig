@@ -1,0 +1,22 @@
+{% extends 'main.twig' %}
+
+{% block bodyinner %}
+    <!-- Start Error Area -->
+    <div class="error-area">
+        <div class="d-table">
+            <div class="d-table-cell">
+                <div class="container">
+                    <div class="error-content">
+                        <h1>405</h1>
+                        <h2>Not allowed</h2>
+                        <p>{{ methods.implode(' ') }}</p>
+                        <div class="button">
+                            <a href="/" class="btn">Back to Home</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Error Area -->
+{% endblock %}

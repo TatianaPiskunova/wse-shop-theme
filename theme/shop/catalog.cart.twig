@@ -1,0 +1,471 @@
+{% extends 'main.twig' %}
+
+{% block title %}Cart | {{ parent() }}{% endblock %}
+
+{% block page %}
+    <script>
+        window.catalog = {
+            cart: {
+                // cart column headers
+                columns: [
+                    {label: '', attr: 'thumb', view: null, class: ' col-lg-1 col-md-1 col-12'},
+                    {label: 'Product Name', attr: 'url', view: null, class: 'col-lg-4 col-md-3 col-12'},
+                    {label: 'Price', attr: 'price', view: null, class: ' col-lg-2 col-md-2 col-12'},
+                    {label: 'Quantity', attr: 'quantity', view: null, class: ' col-lg-2 col-md-2 col-12'},
+                    {label: 'Subtotal', attr: 'total', view: null, class: ' col-lg-2 col-md-2 col-12'},
+                    {label: '', attr: 'remove', view: null, class: ' col-lg-1 col-md-2 col-12'},
+                ],
+
+                // showing header
+                columns_header: true,
+
+                // showing items group title
+                group_header: true,
+
+                // table style ('table' or 'div')
+                style: 'div',
+
+                // cart handler url
+                url: '',
+            },
+
+            // format settings
+            format: {
+                count: {decimalPlaces: 0, thousandsSeparator: ',', decimalSeparator: '.'}, // in item counts
+                price: {
+                    decimalPlaces: 2,
+                    currencySymbolStart: '$',
+                    currencySymbolEnd: '',
+                    thousandsSeparator: ',',
+                    decimalSeparator: '.'
+                }, // in item prices and totals
+            },
+
+            events: {
+                'on:ready': (cart) => {
+                    $('[data-cart-not-empty]').toggle(cart.length !== 0);
+                    $('[data-cart-empty]').toggle(cart.length === 0);
+                },
+                'on:cart:update': (updated_item, cart) => {
+                    $('[data-cart-not-empty]').toggle(cart.length !== 0);
+                    $('[data-cart-empty]').toggle(cart.length === 0);
+                },
+                'on:cart:remove': (updated_item, cart) => {
+                    $('[data-cart-not-empty]').toggle(cart.length !== 0);
+                    $('[data-cart-empty]').toggle(cart.length === 0);
+                },
+            }
+        }
+    </script>
+
+    {% include 'catalog.cart.options.twig' %}
+
+    <style>
+        .cart-container > .table {
+            margin: 0;
+        }
+
+        .cart-container > .table > :not(:first-child) {
+            border: none !important;
+
+        }
+
+        .cart-container > .table > .row,
+        .cart-container > .table [data-group] {
+            background-color: #fff;
+            padding: 14px 23px 14px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .cart-container > .table > .row {
+            background-color: #f3f3f3;
+            color: #000;
+            font-size: 14px;
+            font-weight: 400;
+            text-transform: uppercase;
+        }
+
+        .cart-container > .table [data-type="product"] {
+            font-weight: 400;
+            font-size: 16px;
+            color: #000;
+            padding: 30px 20px;
+            border-bottom: 1px solid #eee;
+            /*flex-wrap: nowrap;*/
+        }
+
+        .cart-container > .table [data-type="product"] [data-attr="thumb"] img {
+            height: 75px;
+        }
+
+        .cart-container > .table [data-type="product"] [data-attr="price"],
+        .cart-container > .table [data-type="product"] [data-attr="total"] {
+            font-size: 16px;
+            font-weight: 600;
+            color: #d54343;
+        }
+
+        .cart-container > .table [data-type="product"] [data-attr="url"] a {
+            color: #000;
+        }
+
+        .cart-container > .table [data-type="product"] [data-attr="url"] a:hover {
+            color: #d54343;
+        }
+
+        .cart-container > .table [data-type="product"] [data-attr="quantity"] input {
+            border: 1px solid #e5e5e5;
+            background-color: transparent;
+            color: #495057;
+            width: 120px;
+            height: 46px;
+            font-weight: 600;
+            padding: 0 10px;
+        }
+
+        .cart-container > .table [data-type="product"] [data-attr="remove"] button {
+            width: 46px;
+            height: 46px;
+            display: inline-block;
+            color: #fff;
+            background-color: #f44336;
+            line-height: 20px;
+
+        }
+
+        [data-input].has-error input {
+            border-color: red;
+        }
+
+        [data-input] + label.error {
+            display: none;
+        }
+
+        [data-input].has-error + label.error {
+            display: inline;
+        }
+
+
+    </style>
+
+    {% include 'common/breadcrumbs.twig' with {
+        'catalog': 'Catalog',
+        'title': 'Cart'
+    } %}
+
+    <!-- Empty Cart -->
+    <div class="shopping-cart section" style="display: none" data-cart-empty>
+        <div class="container">
+            <div class="row pt-5 pb-5">
+                <div class="col-md-12 text-center">
+                    <h3 class="pb-3">Your cart is still empty, why?</h3>
+                    <p>
+                        Check out our <a href="/catalog">catalog</a>,
+                        you might like something!
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--/ End Empty Cart -->
+
+    <!-- Shopping Cart -->
+    <div class="product-area cart-page-area" style="display: none" data-cart-not-empty>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="section-title-style2">
+                        <h5 class="title">Shopping Cart</h5>
+                    </div>
+                </div>
+            </div>
+            <div data-catalog-cart></div>
+        </div>
+    </div>
+    <!--/ End Shopping Cart -->
+
+    <!-- Checkout Form -->
+    <section class="checkout-wrapper section pt-3 mb-50" style="display: none" data-cart-not-empty>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-7">
+                    <div class="billing-info-wrap">
+
+                        <div class="cart-calculate-discount-wrap mb-40">
+                            <ul id="accordionExample">
+                                <li>
+                                    <h6 class="title" data-bs-toggle="collapse" data-bs-target="#collapseThree"
+                                        aria-expanded="true" aria-controls="collapseThree">Your Personal Details </h6>
+                                    <section class="checkout-steps-form-content collapse show" id="collapseThree"
+                                             aria-labelledby="headingThree" data-bs-parent="#accordionExample">
+                                        <div class="row">
+                                            <div class="col-md-12 ">
+                                                <div class="billing-info mb-20">
+                                                    <label>User Name <abbr class="required"
+                                                                           title="required">*</abbr></label>
+                                                    {% include 'mixin/form.twig' with {
+                                                        'type': 'text',
+                                                        'name': 'delivery[client]',
+                                                        'args': {
+                                                            'value': user.name(),
+                                                            'required': true,
+                                                            'class': ['form-control'],
+                                                            'data': {'catalog-cart-data': ''}
+                                                        }
+                                                    } %}
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="billing-info mb-20">
+                                                    <label>Email Address</label>
+                                                    {% include 'mixin/form.twig' with {
+                                                        'type': 'email',
+                                                        'name': 'email',
+                                                        'args': {
+                                                            'value': user.email,
+                                                            'class': ['form-control'],
+                                                            'data': {'catalog-cart-data': ''}
+                                                        }
+                                                    } %}
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="billing-info mb-20">
+                                                    <label>Phone Number <abbr class="required" title="required">*</abbr></label>
+                                                    {% include 'mixin/form.twig' with {
+                                                        'type': 'tel',
+                                                        'name': 'phone',
+                                                        'args': {
+                                                            'value': user.phone,
+                                                            'required': true,
+                                                            'class': ['form-control'],
+                                                            'data': {'catalog-cart-data': ''}
+                                                        }
+                                                    } %}
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12 cart-shiping-update-wrapper">
+                                                <div class="cart-shiping-btn update-btn">
+                                                    <a class="btn text-white" data-bs-toggle="collapse"
+                                                       data-bs-target="#collapseFour" aria-expanded="false"
+                                                       aria-controls="collapseFour">
+                                                        next
+                                                    </a>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </section>
+                                </li>
+
+                                <li>
+                                    <h6 class="title collapsed" data-bs-toggle="collapse" data-bs-target="#collapseFour"
+                                        aria-expanded="false" aria-controls="collapseFour">Shipping Address </h6>
+                                    <section class="checkout-steps-form-content collapse" id="collapseFour"
+                                             aria-labelledby="headingFour" data-bs-parent="#accordionExample">
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <div class="billing-select mb-20">
+                                                    <label>Delivery Type <abbr class="required"
+                                                                               title="required">*</abbr></label>
+
+                                                    <div class="form-input form select-style">
+                                                        {% include 'mixin/form.twig' with {
+                                                            'type': 'select',
+                                                            'args': {
+                                                                'class': ['select-active'],
+                                                                'data': {'catalog-cart-delivery': ''}
+                                                            }
+                                                        } %}
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-6">
+                                                <div class="billing-info mb-20">
+                                                    <label>Country <abbr class="required"
+                                                                         title="required">*</abbr></label>
+                                                    <div class="form-input form">
+                                                        {% include 'mixin/form.twig' with {
+                                                            'type': 'text',
+                                                            'name': 'delivery[address][0]',
+                                                            'args': {
+                                                                'value': user.country,
+                                                                'required': true,
+                                                                'placeholder': 'Country',
+                                                                'data': {'catalog-cart-data': ''}
+                                                            }
+                                                        } %}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="billing-info mb-20">
+                                                    <label>City <abbr class="required" title="required">*</abbr></label>
+                                                    <div class="form-input form">
+                                                        {% include 'mixin/form.twig' with {
+                                                            'type': 'text',
+                                                            'name': 'delivery[address][1]',
+                                                            'args': {
+                                                                'value': user.city,
+                                                                'required': true,
+                                                                'placeholder': 'City',
+                                                                'data': {'catalog-cart-data': ''}
+                                                            }
+                                                        } %}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="billing-info mb-20">
+                                                    <label>Post Code <abbr class="required"
+                                                                           title="required">*</abbr></label>
+                                                    <div class="form-input form">
+                                                        {% include 'mixin/form.twig' with {
+                                                            'type': 'text',
+                                                            'name': 'delivery[address][3]',
+                                                            'args': {
+                                                                'value': user.postcode,
+                                                                'required': true,
+                                                                'placeholder': 'Post Code',
+                                                                'data': {'catalog-cart-data': ''}
+                                                            }
+                                                        } %}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="billing-info mb-20">
+                                                    <label>Delivery address <abbr class="required"
+                                                                                  title="required">*</abbr></label>
+                                                    {% include 'mixin/form.twig' with {
+                                                        'type': 'textarea',
+                                                        'name': 'delivery[address][2]',
+                                                        'args': {
+                                                            'value': user.address,
+                                                            'placeholder': 'Delivery address',
+                                                            'style': 'height: 105px; margin-bottom: 16px;',
+                                                            'class': ['form-control'],
+                                                            'data': {'catalog-cart-data': ''}
+                                                        }
+                                                    } %}
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="billing-info mb-20">
+                                                    <label>Shipping date</label>
+                                                    {% include 'mixin/form.twig' with {
+                                                        'type': 'datetime',
+                                                        'name': 'shipping',
+                                                        'args': {
+                                                            'value': 'now'|date_modify('+1 day')|df('Y-m-d\\TH:00'),
+                                                            'placeholder': 'Datetime shipping',
+                                                            'class': ['form-control'],
+                                                            'data': {'catalog-cart-data': ''}
+                                                        }
+                                                    } %}
+
+                                                    <label class="error">
+                                                        We have a limit on the number of orders for the specified day,
+                                                        please select another date.
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="billing-info mb-20">
+                                                    <label>Comment</label>
+                                                    {% include 'mixin/form.twig' with {
+                                                        'type': 'textarea',
+                                                        'name': 'comment',
+                                                        'args': {
+                                                            'placeholder': 'Comment',
+                                                            'style': 'height: 70px; margin-bottom: 16px;',
+                                                            'class': ['form-control'],
+                                                            'data': {'catalog-cart-data': ''}
+                                                        }
+                                                    } %}
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-12 cart-shiping-update-wrapper">
+                                                <div class="cart-shiping-btn update-btn">
+                                                    <a class="btn text-white" data-bs-toggle="collapse"
+                                                       data-bs-target="#collapseFive" aria-expanded="false"
+                                                       aria-controls="collapseFive">
+                                                        next
+                                                    </a>
+                                                </div>
+                                            </div>
+
+
+                                        </div>
+                                    </section>
+                                </li>
+
+                                <li>
+                                    <h6 class="title collapsed" data-bs-toggle="collapse" data-bs-target="#collapseFive"
+                                        aria-expanded="false" aria-controls="collapseFour">Payment method</h6>
+                                    <section class="checkout-steps-form-content collapse" id="collapseFive"
+                                             aria-labelledby="headingFour" data-bs-parent="#accordionExample">
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <div class="billing-select mb-20">
+                                                    <label>Payment Method <abbr class="required"
+                                                                                title="required">*</abbr></label>
+
+                                                    <div class="form-input form select-style">
+                                                        {% include 'mixin/form.twig' with {
+                                                            'type': 'select',
+                                                            'name': 'payment',
+                                                            'args': {
+                                                                'class': ['select-active'],
+                                                                'data': {'catalog-cart-payment': ''}
+                                                            }
+                                                        } %}
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-12 cart-shiping-update-wrapper">
+                                                <div class="cart-shiping-btn update-btn">
+                                                    <a class="btn btn-link" href="javascript:void(0)"
+                                                       data-catalog-cart-checkout> Checkout</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </section>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-5">
+                    <div class="grand-total-wrap">
+                        <div class="grand-total-content">
+                            <h4 class="title">Your order</h4>
+
+                            <div class="d-flex justify-content-between">
+                                <p>Subtotal:</p>
+                                <p data-catalog-cart-total></p>
+                            </div>
+                            <div class="d-flex justify-content-between">
+                                <p>Shipping:</p>
+                                <p data-catalog-cart-total-service></p>
+                            </div>
+                            <div class="grand-total">
+                                <h4>Total <span data-catalog-cart-total-all></span></h4>
+                            </div>
+
+                            <div class="grand-total-btn">
+                                <a href="javascript:void(0)" class="btn btn-link"
+                                   data-catalog-cart-checkout>Checkout</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+    <!--/ End Checkout Form -->
+{% endblock %}

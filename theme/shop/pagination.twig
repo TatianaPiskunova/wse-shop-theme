@@ -1,0 +1,19 @@
+{% set pages = (pagination.count / pagination.page)|round(0, 'ceil') %}
+
+{% if pages > 1 %}
+    <!-- Pagination -->
+    <div class="pagination left blog-grid-page">
+        <div class="pagination-area">
+            <nav>
+                <ul class="page-numbers">
+                    {% for page in 0..pages-1 %}
+                    <li>
+                        <a class="page-number active" href="{{ non_page_path() }}{{ page ? '/' ~ page : '' }}{{ current_query() }}">{{ page + 1 }}</a>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </nav>
+        </div>
+    </div>
+    <!--/ End Pagination -->
+{% endif %}

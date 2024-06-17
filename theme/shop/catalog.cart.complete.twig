@@ -1,0 +1,124 @@
+{% extends 'main.twig' %}
+
+{% block title %}Order {{ order.serial }} {{ order.external_id ? '(' ~ order.external_id ~ ')' : '' }} | {{ parent() }}{% endblock %}
+
+{% block head %}
+    <meta name="robots" content="noindex, nofollow">
+    {{ parent() }}
+{% endblock %}
+
+{% block page %}
+    {% include 'common/breadcrumbs.twig' with {
+        'catalog': 'Catalog',
+        'parents': ['Cart'],
+        'title': 'Order'
+    } %}
+
+    <section class="">
+        <div class="container pt-5">
+            <div class="row pt-5 pb-5">
+                <div class="col-md-12 text-center">
+                    <h3 class="pb-3">
+                        Order Information {{ order.serial }} {{ order.external_id ? '(' ~ order.external_id ~ ')' : '' }}
+                    </h3>
+                    <p>Thank you for your order</p>
+                </div>
+            </div>
+
+            <div class="row pb-5">
+                <div class="col-md-6">
+                    <h4>Customer</h4>
+
+                    <table class="table table-striped mt-3 mb-5">
+                        <tr>
+                            <th style="width: 50%">Customer Name</th>
+                            <td style="width: 50%">{{ order.delivery.client }}</td>
+                        </tr>
+                        <tr>
+                            <th>Phone</th>
+                            <td>{{ order.phone }}</td>
+                        </tr>
+                        <tr>
+                            <th>E-Mail</th>
+                            <td>{{ order.email }}</td>
+                        </tr>
+                        <tr>
+                            <th>Delivery address</th>
+                            <td>{{ order.delivery.address }}</td>
+                        </tr>
+                        <tr>
+                            <th>Shipping date</th>
+                            <td>{{ order.shipping|df }}</td>
+                        </tr>
+                        <tr>
+                            <th>Comment</th>
+                            <td>{{ order.comment }}</td>
+                        </tr>
+                        {% if order.status_uuid %}
+                            <tr>
+                                <th>Status</th>
+                                <td>{{ order.status.title }}</td>
+                            </tr>
+                        {% endif %}
+                    </table>
+                </div>
+
+                <div class="col-md-6">
+                    <h4>Order list</h4>
+
+                    <table class="table table-striped mt-3 mb-5" style="width: 100%;">
+                        <tr>
+                            <th>Product Name</th>
+                            <th class="text-end">Price</th>
+                            <th class="text-end">Discount</th>
+                            <th class="text-end">Tax</th>
+                            <th class="text-end">Quantity</th>
+                            <th class="text-end">Subtotal</th>
+                        </tr>
+
+                        {% for item in order.products().where('type', 'product').get() %}
+                            <tr>
+                                <td>{{ item.title }}</td>
+                                <td class="text-end">{{ item.totalPrice()|number_format(2, '.', ' ') }}</td>
+                                <td class="text-end">{{ item.totalDiscount()|number_format(2, '.', ' ') }}</td>
+                                <td class="text-end">{{ item.totalTax()|number_format(2, '.', ' ') }}</td>
+                                <td class="text-end">{{ item.totalCount()|number_format(2, '.', ' ') }}</td>
+                                <td class="text-end">{{ item.totalSum()|number_format(2, '.', ' ') }}</td>
+                            </tr>
+                        {% endfor %}
+
+                        <tbody>
+                            {% for item in order.products().where('type', 'service').get() %}
+                                <tr>
+                                    <td>{{ item.title }}</td>
+                                    <td class="text-end">{{ item.totalPrice()|number_format(2, '.', ' ') }}</td>
+                                    <td class="text-end">{{ item.totalDiscount()|number_format(2, '.', ' ') }}</td>
+                                    <td class="text-end">{{ item.totalTax()|number_format(2, '.', ' ') }}</td>
+                                    <td class="text-end">{{ item.totalCount()|number_format(2, '.', ' ') }}</td>
+                                    <td class="text-end">{{ item.totalSum()|number_format(2, '.', ' ') }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+
+                        <tfoot>
+                            <tr>
+                                <th colspan="5">Discount</th>
+                                <td class="text-end">{{ order.totalDiscount()|number_format(2, '.', ' ') }}</td>
+                            </tr>
+
+                            <tr>
+                                <th colspan="5">Tax</th>
+                                <td class="text-end">{{ order.totalTax()|number_format(2, '.', ' ') }}</td>
+                            </tr>
+
+                            <tr>
+                                <th colspan="5">Total</th>
+                                <td class="text-end">{{ order.totalSum()|number_format(2, '.', ' ') }}</td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

@@ -1,0 +1,37 @@
+{% set categories=catalog_category() %}
+
+    {% for node in categories.where('parent_uuid', '=', parent ?? null).sortBy('order') %}
+        {% if categories.where('parent_uuid', '=', node.uuid).sortBy('order').count() %}
+            <li class="offcanvas-nav-parent">
+                <a class="offcanvas-nav-item" href="javascript:void(0)">{{ node.title }}</a>
+                <ul>
+
+                    {% for sub in categories.where('parent_uuid', '=', node.uuid).sortBy('order') %}
+                        {% if categories.where('parent_uuid', '=', sub.uuid).sortBy('order').count() %}
+                            <li>
+                                <a class="offcanvas-nav-item" href="javascript:void(0)">{{ sub.title }}</a>
+
+                                <ul>
+                                    {% for tmp in  categories.where('parent_uuid', '=', sub.uuid).sortBy('order') %}
+                                        <li><a href="/catalog/{{ tmp.address }}">{{ tmp.title }}</a></li>
+                                    {% endfor %}
+                                </ul>
+                            </li>
+                        {% else %}
+                            <li>
+                                <a class="offcanvas-nav-item" href="/catalog/{{ sub.address }}">{{ sub.title }}</a>
+                            </li>
+                        {% endif %}
+                    {% endfor %}
+
+                </ul>
+            </li>
+
+        {% else %}
+            <li>
+                <a href="/catalog/{{ node.address }}">{{ node.title }}</a>
+            </li>
+        {% endif %}
+    {% endfor %}
+
+

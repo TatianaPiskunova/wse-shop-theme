@@ -1,0 +1,36 @@
+    {% for prod in products %}
+        <div class="swiper-slide">
+            <div class="product-item">
+                <div class="product-thumb">
+                    <a href="/catalog/{{ prod.address }}">
+                        {% include 'mixin/img.twig' with {
+                            'src': prod.images.first().public_path('middle') ?? '/assets/img/no_image.png',
+                            'placeholder': prod.images.first().public_path('small') ?? '/assets/img/no_image.png',
+                            'id': 'current',
+                            'title': prod.title,
+                            'alt': prod.title,
+                            'style': 'height: 250px; width: 250px;object-fit: contain;'
+                        } only %}
+                    </a>
+                    {% if prod.special %}
+                        <div class="ribbons">
+                            <span class="ribbon ribbon-new">Special</span>
+                        </div>
+                    {% endif %}
+                </div>
+                <div class="product-info">
+                    <h4 class="title"><a href="/catalog/{{ prod.address }}">{{ prod.title }}</a></h4>
+                    <div class="prices">
+                        {% if prod.discount %}
+                            <span class="price-old">${{ prod.price + prod.discount }}</span>
+                            <span class="price">${{ prod.price }}</span>
+                            <span class="price-save">Save {{ prod.discount }}$</span>
+                        {% else %}
+                            <span class="price">${{ prod.price }}</span>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+

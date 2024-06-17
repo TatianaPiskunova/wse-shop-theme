@@ -1,0 +1,36 @@
+{% extends 'page.twig' %}
+
+{% block content %}
+    <!--== Start Divider Area Wrapper ==-->
+    <section class="divider-area divider-style3-area">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-5 col-md-5 col-sm-6">
+                    <div class="thumb effect-animate-flash">
+                        {% include 'mixin/img.twig' with {
+                            'src': page.images.first().public_path('middle') ?? '/assets/img/no_image.png',
+                            'title': product.title,
+                            'alt': product.title,
+                            'style': 'height: 420px; width=445px; object-fit: contain;'
+                        } only %}
+                    </div>
+                </div>
+                <div class="col-lg-7 col-md-7 col-sm-6">
+                    <div class="divider-content-style3">
+                        <h2 class="title">100% Organic.</h2>
+                        <h2 class="title mb-0">Natural <span>Fresh Juice</span></h2>
+                        <p>{{page.content|raw}}</p>
+                        <a class="btn-theme" href="/catalog">Start Now</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    {% include '/components/shipping.twig' %}
+    {% include '/components/our_team.twig' %}
+    {% if guestbook().count() %}
+    {% include '/components/reviews.twig' %}
+    {% endif %}
+    <!--== End Divider Area Wrapper ==-->
+{% endblock %}

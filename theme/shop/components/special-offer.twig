@@ -1,0 +1,33 @@
+<!-- Start Special Offer -->
+{% set specialProduct = catalog_product({'special': 'true'}) %}
+
+<section class="product-area product-style3-area">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 m-auto">
+                <div class="section-title text-center">
+                    <h4 class="subtitle">Awesome Shop</h4>
+                    <h2 class="title">Special Offer</h2>
+                </div>
+            </div>
+        </div>
+        <div class="row mt-50">
+            <div class="col-lg-12">
+                <div class="swiper-container-wrap swiper-nav-style product-slider-nav">
+                    <div class="swiper-container product-slider-container">
+                        <div class="swiper-wrapper">
+                                {% include 'catalog.category.product.slider.twig' with {'products':specialProduct} %}
+                        </div>
+                    </div>
+                    <!-- Add Arrows -->
+                    <div class="swiper-button-next"></div>
+                    <div class="swiper-button-prev"></div>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- End Special Offer -->

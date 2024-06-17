@@ -1,0 +1,34 @@
+{% for node in categories.where('parent_uuid', '=', parent ?? null).sortBy('order') %}
+    {% if categories.where('parent_uuid', '=', node.uuid).sortBy('order').count() %}
+
+        <li class="menu-item">
+            <a class="menu-item-title" href="/catalog/{{ node.address }}">{{ node.title }}<i class="fa-solid fa-angle-right"></i></a>
+            <ul class="verticale-mega-menu column-two flex-wrap megamenu-nav-banner">
+
+                {% for sub in categories.where('parent_uuid', '=', node.uuid).sortBy('order') %}
+                    {% if categories.where('parent_uuid', '=', sub.uuid).sortBy('order').count() %}
+                        <li>
+                            <a href="/catalog/{{ sub.address }}">{{ sub.title }}</a>
+
+                            <ul class="submenu-item">
+                                {% for tmp in  categories.where('parent_uuid', '=', sub.uuid).sortBy('order') %}
+                                    <li><a href="/catalog/{{ tmp.address }}">{{ tmp.title }}</a></li>
+                                {% endfor %}
+                            </ul>
+                        </li>
+                    {% else %}
+                        <li>
+                            <a href="/catalog/{{ sub.address }}">{{ sub.title }}</a>
+                        </li>
+                    {% endif %}
+                {% endfor %}
+
+            </ul>
+        </li>
+
+    {% else %}
+        <li class="menu-item">
+            <a class="menu-item-title" href="/catalog/{{ node.address }}">{{ node.title }}</a>
+        </li>
+    {% endif %}
+{% endfor %}

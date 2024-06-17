@@ -1,0 +1,56 @@
+{% extends 'main.twig' %}
+
+{% block title %}{{ publication.title }} | {{ category.meta.title ? category.meta.title : category.title }} | {{ parent() }}{% endblock %}
+
+{% block head %}
+    {{ parent() }}
+    <meta name="description" content="{{ category.meta.description }}">
+    <meta name="keywords" content="{{ category.meta.keywords }}">
+
+    <link rel="alternate" type="application/rss+xml" title="{{ parameter('common_title') }}"
+          href="{{ parameter('common_homepage') }}/{{ category.rss() }}">
+{% endblock %}
+
+{% block page %}
+    {% include 'common/breadcrumbs.twig' with {
+        'parents': [category.meta.title ? category.meta.title : category.title],
+        'title': publication.meta.title ? publication.meta.title : publication.title
+    } %}
+
+    <!-- Start Blog Singel Area -->
+    <section class="blog-details-area">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="post-details-content">
+                        <div class="post-details-body">
+                            <div class="thumb">
+                                {% include 'mixin/img.twig' with {
+                                    'src': publication.images.first().public_path('middle') ?? '/assets/img/no_image.png',
+                                    'placeholder': publication.images.first().public_path('small') ?? '/assets/img/no_image.png',
+                                    'title': publication.title,
+                                    'alt': publication.title,
+                                    'style': 'display:block; height: 520px; width: 1110px; object-fit: cover; object-position: center center;',
+                                    'class': 'w-100',
+                                } only %}
+                            </div>
+                            <div class="content">
+                                <h4 class="title">{{ publication.title }}</h4>
+                                <div class="post-meta"><p class="meta-author">Posted by<span> {{ publication.user.name('short') }}</span></p>
+                                    <p class="meta-date">{{ publication.date|df }}</p>
+                                    <p class="meta-category"><a href="/{{ publication.category.address }}">{{ publication.category.title }}</a>
+                                    </p>
+                                </div>
+
+                                <p class="mb-30"> {{ publication.content.full|raw }}</p>
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- End Blog Singel Area -->
+{% endblock %}

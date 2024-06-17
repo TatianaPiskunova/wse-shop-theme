@@ -1,0 +1,296 @@
+{% extends 'main.twig' %}
+
+{% block title %}{{ product.meta.title ? product.meta.title : (product.title ?? 'Product') }} | {{ parent() }}{% endblock %}
+
+{% block head %}
+    {{ parent() }}
+    <meta name="description" content="{{ product.meta.description }}">
+    <meta name="keywords" content="{{ product.meta.keywords }}">
+{% endblock %}
+
+{% block page %}
+    <script>
+        window.catalog = {
+            events: {
+                'on:cart:add': (new_item) => {
+                    Swal.fire({
+                        title: 'Product added to cart',
+                        text: new_item.title + ' (x' + new_item.quantity + ') now in cart.',
+                        icon: 'success',
+                        showCancelButton: true,
+                        cancelButtonText: 'Continue shopping',
+                        cancelButtonColor: '#0167F3',
+                        confirmButtonText: 'Checkout',
+                        confirmButtonColor: '#081828'
+                    }).then((result) => {
+                        if (result.value) {
+                            location.href = '/cart';
+                        }
+                    });
+                },
+                'on:cart:update': (updated_item) => {
+                    Swal.fire({
+                        title: 'Cart updated',
+                        text: updated_item.title + ' (x' + updated_item.quantity + ')',
+                        icon: 'success',
+                        showCancelButton: true,
+                        cancelButtonText: 'Continue shopping',
+                        cancelButtonColor: '#0167F3',
+                        confirmButtonText: 'Checkout',
+                        confirmButtonColor: '#081828'
+                    }).then((result) => {
+                        if (result.value) {
+                            location.href = '/cart';
+                        }
+                    });
+                }
+            },
+
+
+            // format settings
+            format: {
+                count: {decimalPlaces: 0, thousandsSeparator: ',', decimalSeparator: '.'}, // in item counts
+                price: {decimalPlaces: 2, currencySymbolStart: '$',  currencySymbolEnd: '', thousandsSeparator: ',', decimalSeparator: '.'}, // in item prices and totals
+            },
+        }
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            $('a.img').fancybox();
+        })
+    </script>
+
+    {% include 'common/breadcrumbs.twig' with {
+        'catalog': 'Catalog',
+        'parents': category.parents(),
+        'title': product.meta.title ? product.meta.title : (product.title ?? 'Product')
+    } %}
+
+    <!-- Start Item Details -->
+    <section class="product-area shop-single-product">
+            <div class="container" data-catalog-item>
+                <div class="row">
+                    <div class="col-md-5">
+                        <div class="single-product-slider">
+                            {% if product.images().count() %}
+                                {% set images = product.images %}
+                                <div class="single-product-thumb">
+                                    <div class="swiper-container single-product-thumb-slider">
+                                        <div class="swiper-wrapper">
+                                            {% for index, file in images %}
+                                                <div class="swiper-slide zoom zoom-hover info_item">
+                                                    <div class="thumb-item">
+                                                        <a class="lightbox-image" href="{{ file.public_path('full') }}" data-fancybox="gallery">
+                                                            {% include 'mixin/img.twig' with {
+                                                                'src': file.public_path('full'),
+                                                                'title': product.title,
+                                                                'alt': product.title ~ ' ' ~ index,
+                                                                'style': 'object-fit: contain;'
+                                                            } only %}
+                                                        </a>
+                                                        {% if product.special %}
+                                                            <div class="ribbons">
+                                                                <span class="ribbon ribbon-new">Special</span>
+                                                            </div>
+                                                        {% endif %}
+                                                    </div>
+                                                </div>
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {% if images.count() > 1 %}
+                                    <div class="single-product-nav single-swiper-nav">
+                                        <div class="swiper-container single-product-nav-slider">
+                                            <div class="swiper-wrapper">
+                                                {% for index, file in images %}
+                                                    <div class="swiper-slide info_item1" >
+                                                        <div class="nav-item">
+                                                            {% include 'mixin/img.twig' with {
+                                                                'src': file.public_path('full'),
+                                                                'title': product.title,
+                                                                'alt': product.title ~ ' ' ~ index,
+                                                                'style': 'object-fit: fill; width: 90px; height: 90px'
+                                                            } only %}
+                                                        </div>
+                                                    </div>
+                                                {% endfor %}
+                                            </div>
+                                        </div>
+                                        <div class="swiper-button-prev"></div>
+                                        <div class="swiper-button-next"></div>
+                                    </div>
+                                {% endif %}
+                            {% else %}
+                                <div class="single-product-thumb">
+                                    <div class="thumb-item">
+                                        <a class="lightbox-image" href="{{ '/assets/img/no_image.png' }}" data-fancybox="gallery">
+                                            {% include 'mixin/img.twig' with {
+                                                'src': '/assets/img/no_image.png',
+                                                'title': product.title,
+                                                'alt': product.title ~ ' ' ~ index,
+                                                'style': 'object-fit: contain;'
+                                            } only %}
+                                        </a>
+                                        {% if product.special %}
+                                            <div class="ribbons">
+                                                <span class="ribbon ribbon-new">Special</span>
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="col-md-7">
+                        <div class="single-product-info product-info-variable">
+                            <h4 class="title">{{ product.title }}</h4>
+                            <div class="prices">
+                                {% set price = product.price(catalog_product_price_type()) %}
+                                {% if product.discount %}
+                                    <span class="price-old">${{ price + product.discount }}</span>
+                                    <span class="price">${{ price }}</span>
+                                    <span class="price-save">Save {{ product.discount }}$</span>
+                                {% else %}
+                                <span class="price">${{ price }}</span>
+                                {% endif %}
+                            </div>
+                            <div class="product-number">
+                                    {% for tag in product.tags %}
+                                        <i class="fa-regular fa-tag"></i>
+                                        {{ tag }}
+                                    {% endfor %}
+                                    <a href="/catalog/{{ category.address }}">{{ category.title }}</a>
+                            </div>
+                            {% if product.extra %}
+                                <p class="product-desc">{{ product.extra|raw }}</p>
+                            {% endif %}
+                            <div class="quick-product-action mt-0">
+                                <span class="title">Quantity</span>
+                                <div class="action-top">
+                                    <div class="pro-qty">
+                                        <input type="number"
+                                               class="form-control"
+                                               id="quantity"
+                                               data-catalog-item-attr="quantity"
+                                               value="{{ product.quantityMin }}"
+                                               min="{{ product.quantityMin }}"
+                                               step="{{ product.quantity }}">
+                                    </div>
+                                    <button class="btn btn-black" data-catalog-item-add>+ Add to cart</button>
+                                </div>
+                                {% include 'catalog.product.options.twig' with {'categories': categories, 'product': product, 'user': user} only %}
+                            </div>
+
+                            <div class="card-info-area">
+                                <div class="row">
+                                    <div class="col-sm-4 col-6">
+                                        <div class="card-item">
+                                            <div class="icon">
+                                                <img src='/assets/img/no_image.png' alt="Image">
+                                            </div>
+                                            <div class="info-content">
+                                                <p>Security policy (edit with Customer reassurance module)</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4 col-6">
+                                        <div class="card-item">
+                                            <div class="icon">
+                                                <img src='/assets/img/no_image.png' alt="Image">
+                                            </div>
+                                            <div class="info-content">
+                                                <p>Delivery policy (edit with Customer reassurance module)</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4 col-6">
+                                        <div class="card-item">
+                                            <div class="icon">
+                                                <img src='/assets/img/no_image.png' alt="Image">
+                                            </div>
+                                            <div class="info-content">
+                                                <p>Return policy (edit with Customer reassurance module)</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    <section class="product-area product-description-review-area">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="product-description-review">
+                        <ul class="nav nav-tabs product-description-tab-menu" id="myTab" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link active" id="product-desc-tab" data-bs-toggle="tab" data-bs-target="#productDesc" type="button" role="tab" aria-controls="productDesc" aria-selected="true">Product Details</button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="product-comment-tab" data-bs-toggle="tab" data-bs-target="#commentProduct" type="button" role="tab" aria-controls="commentProduct" aria-selected="false">Attributes</button>
+                            </li>
+                        </ul>
+                        <div class="tab-content product-description-tab-content" id="myTabContent">
+                            <div class="tab-pane fade show active" id="productDesc" role="tabpanel" aria-labelledby="product-desc-tab">
+
+                                <div class="product-details" >
+                                    <div class="product-description-info">
+                                        <h4>Description</h4>
+                                        <p>{{ product.description|raw }}</p>
+                                        <ul>
+                                            {% if product.country %}<li>Country: <span>{{ product.country }}</span></li>{% endif %}
+                                            {% if product.manufacturer %}<li>Manufacturer: <span>{{ product.manufacturer }}</span></li>{% endif %}
+                                            {% if product.vendorcode %}<li>Vendorcode: <span>{{ product.vendorcode }}</span></li>{% endif %}
+                                            {% if product.barcode %}<li>Barcode: <span>{{ product.barcode }}</span></li>{% endif %}
+                                            {% if product.dimension.weight_class %}<li>Volume: <span>{{ product.weightWithClass() }}</span></li>{% endif %}
+                                            {% if product.stock %}<li>Stock: <span>{{ product.stock > 0 ? '<span>In stock</span>' : '<span>Out of stock</span>' }}</span> </li>{% endif %}
+                                            {% if product.tax %}<li>Tax: <span>{{ product.tax }}</span> </li>{% endif %}
+                                            {% if product.dimension.length_class %}<li>Dimension: <span>{{ product.specificationWithClass() }}</span> </li>{% endif %}
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade justify-content-center" id="commentProduct" role="tabpanel" aria-labelledby="product-comment-tab">
+                                <div class="product-desc">
+                                    <ul class="normal-list">
+                                        {% for attribute in product.attributes %}
+                                            <li><span>{{ attribute.title }}</span>: {{ attribute.value() }}</li>
+                                        {% endfor %}
+                                        {% if product.tax %}<li><span>VAT:</span> ${{ product.tax() }}</li>{% endif %}
+                                    </ul>
+                                    {% if product.relations.count() %}
+                                        <h4>Related products:</h4>
+                                        <ul class="normal-list">
+                                            {% for relative in product.relations %}
+                                                <li>
+                                                    <span>
+                                                        <a href="/catalog/{{ relative.address }}">
+                                                            {{ relative.title }}
+                                                        </a>
+                                                    </span>: ${{ relative.price(catalog_product_price_type()) }} &times; {{ relative.pivot.count }} &equals; ${{ relative.price * relative.pivot.count }}
+                                                </li>
+                                            {% endfor %}
+                                        </ul>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    {% if product.relations.count() %}
+        {% include '/components/related_products.twig' %}
+    {% endif %}
+
+    {% include '/components/products_in_category.twig' %}
+{% endblock %}

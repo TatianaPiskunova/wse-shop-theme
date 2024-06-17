@@ -1,0 +1,40 @@
+<!-- Start Breadcrumbs -->
+<section class="page-title-area bg-img" data-bg-img="http://placehold.it">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-12 m-auto">
+                <div class="page-title-content text-center">
+                    <h2 class="title">{{ title }}</h2>
+                    <div class="bread-crumbs">
+                        <a href="/">Home</a>
+                        {% if catalog %}
+                        <span class="breadcrumb-sep">
+                            <i class="fa-solid fa-angle-right"></i></span><span>
+                            <a href="/catalog">{{ catalog }}</a></span>
+
+                        {% endif %}
+
+                            {% for item in parents|reverse() %}
+
+                                {% if item.title %}
+                                    <span class="breadcrumb-sep">
+                            <i class="fa-solid fa-angle-right"></i></span><span>
+                                        <a href="/catalog/{{ item.address }}">{{ item.title }}</a>
+                                    </span>
+                                {% else %}
+                                    <span class="breadcrumb-sep">
+                            <i class="fa-solid fa-angle-right"></i></span><span>{{ item }}</span>
+                                {% endif %}
+
+                            {% endfor %}
+
+                        {% if title %}
+                            <span class="breadcrumb-sep">
+                            <i class="fa-solid fa-angle-right"></i></span><span>{{ title }}</span>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

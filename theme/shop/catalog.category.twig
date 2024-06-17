@@ -1,0 +1,172 @@
+{% extends 'main.twig' %}
+
+{% block title %}{{ category.meta.title ? category.meta.title : (category.title ?? 'Catalog') }} | {{ parent() }}{% endblock %}
+
+{% block head %}
+    {{ parent() }}
+    <meta name="description" content="{{ category.meta.description }}">
+    <meta name="keywords" content="{{ category.meta.keywords }}">
+{% endblock %}
+
+{% block page %}
+    <script>
+        window.catalog = {
+            events: {
+                'on:cart:add': (new_item) => {
+                    Swal.fire({
+                        title: 'Product added to cart',
+                        text: new_item.title + ' (x' + new_item.quantity + ') now in cart.',
+                        icon: 'success',
+                        showCancelButton: true,
+                        cancelButtonText: 'Continue shopping',
+                        cancelButtonColor: '#0167F3',
+                        confirmButtonText: 'Checkout',
+                        confirmButtonColor: '#081828'
+                    }).then((result) => {
+                        if (result.value) {
+                            location.href = '/cart';
+                        }
+                    });
+                },
+                'on:cart:update': (updated_item) => {
+                    Swal.fire({
+                        title: 'Cart updated',
+                        text: updated_item.title + ' (x' + updated_item.quantity + ')',
+                        icon: 'success',
+                        showCancelButton: true,
+                        cancelButtonText: 'Continue shopping',
+                        cancelButtonColor: '#0167F3',
+                        confirmButtonText: 'Checkout',
+                        confirmButtonColor: '#081828'
+                    }).then((result) => {
+                        if (result.value) {
+                            location.href = '/cart';
+                        }
+                    });
+                }
+            },
+
+            // format settings
+            format: {
+                count: {decimalPlaces: 0, thousandsSeparator: ',', decimalSeparator: '.'}, // in item counts
+                price: {
+                    decimalPlaces: 2,
+                    currencySymbolStart: '$',
+                    currencySymbolEnd: '',
+                    thousandsSeparator: ',',
+                    decimalSeparator: '.'
+                }, // in item prices and totals
+            },
+        }
+    </script>
+
+    {% include 'common/breadcrumbs.twig' with {
+        'catalog': 'Catalog',
+        'parents': category.parents(),
+    } %}
+
+    <!-- Start Product Grids -->
+    <div class="product-area product-grid-area">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-9 order-0 order-lg-1">
+                    <div class="shop-toolbar-wrap">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="product-view-mode">
+                                    <nav>
+                                        <div class="nav nav-tabs active" id="nav-tab" role="tablist">
+                                            <button class="nav-link active" id="column-three-tab" data-bs-toggle="tab"
+                                                    data-bs-target="#column-three" type="button" role="tab"
+                                                    aria-controls="column-three" aria-selected="true"><i
+                                                        class="fa-solid fa-table"></i></button>
+
+                                            <button class="nav-link" id="nav-list-tab" data-bs-toggle="tab"
+                                                    data-bs-target="#nav-list" type="button" role="tab"
+                                                    aria-controls="nav-list" aria-selected="false"><i
+                                                        class="fa-solid fa-list"></i></button>
+                                        </div>
+                                    </nav>
+                                    <div class="product-showing-status">
+                                        <p class="count-result">There are {{ products.filtered.count() }} products.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="product-sorting-menu product-sorting">
+                                    {% include 'catalog.category.sort.twig' %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-content" id="nav-tabContent">
+                        <div class="tab-pane fade show active" id="column-three" role="tabpanel"
+                             aria-labelledby="column-three-tab">
+                            <div class="row">
+                                {% if products.filtered.count() %}
+                                    {% for product in products.filtered %}
+                                        <div class="col-md-4 col-sm-6">
+                                            {% include 'catalog.category.product.grid.twig' with {'categories':categories,'product':product} only %}
+                                        </div>
+                                    {% endfor %}
+                                {% else %}
+                                    <div class="col-12 py-5 text-center">
+                                        <h4>There's nothing here</h4>
+                                        <p>
+                                            Try to <a href="{{ non_page_path() }}{{ page ? '/' ~ page : '' }}">remove
+                                                filters</a>
+                                            {% if category %}
+                                                or return to a
+                                                <a href="/catalog/{{ categories.firstWhere('uuid', category.parent).address }}">category
+                                                    above</a>
+                                            {% endif %}
+                                        </p>
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="nav-list" role="tabpanel" aria-labelledby="nav-list-tab">
+                            <div class="row">
+                                {% if products.filtered.count() %}
+                                    {% for product in products.filtered %}
+                                        <div class="col-lg-12">
+                                            {% include 'catalog.category.product.inline.twig' with {'categories':categories,'product':product} only %}
+                                        </div>
+                                    {% endfor %}
+                                {% else %}
+                                    <div class="col-12 py-5 text-center">
+                                        <h4>There's nothing here</h4>
+                                        <p>
+                                            Try to <a href="{{ non_page_path() }}{{ page ? '/' ~ page : '' }}">remove
+                                                filters</a>
+                                            {% if category %}
+                                                or return to a
+                                                <a href="/catalog/{{ categories.firstWhere('uuid', category.parent).address }}">category
+                                                    above</a>
+                                            {% endif %}
+                                        </p>
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            {% include 'pagination.twig' with {'pagination':pagination} only %}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 order-1 order-lg-0">
+                    <div class="sidebar-area shop-sidebar-area">
+
+                        {% include 'catalog.category.menu.twig' with {'categories':categories, 'parent': category.uuid} %}
+                        {% include 'catalog.category.attributes.twig' with {'category': category, 'products': products} %}
+                        {% include 'catalog.category.price.twig' with {'products': products} %}
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Product Grids -->
+{% endblock %}
