@@ -189,7 +189,11 @@
                                     <div class="col-sm-4 col-6">
                                         <div class="card-item">
                                             <div class="icon">
-                                                <img src='/assets/img/no_image.png' alt="Image">
+                                                {% include 'mixin/img.twig' with {
+                                                    'src': '/assets/img/no_image.png',
+                                                    'alt': 'Security policy',
+                                                    'style': 'object-fit: contain;'
+                                                } only %}
                                             </div>
                                             <div class="info-content">
                                                 <p>Security policy (edit with Customer reassurance module)</p>
@@ -199,7 +203,11 @@
                                     <div class="col-sm-4 col-6">
                                         <div class="card-item">
                                             <div class="icon">
-                                                <img src='/assets/img/no_image.png' alt="Image">
+                                                {% include 'mixin/img.twig' with {
+                                                    'src': '/assets/img/no_image.png',
+                                                    'alt': 'Delivery policy',
+                                                    'style': 'object-fit: contain;'
+                                                } only %}
                                             </div>
                                             <div class="info-content">
                                                 <p>Delivery policy (edit with Customer reassurance module)</p>
@@ -209,7 +217,11 @@
                                     <div class="col-sm-4 col-6">
                                         <div class="card-item">
                                             <div class="icon">
-                                                <img src='/assets/img/no_image.png' alt="Image">
+                                                {% include 'mixin/img.twig' with {
+                                                    'src': '/assets/img/no_image.png',
+                                                    'alt': 'Return policy',
+                                                    'style': 'object-fit: contain;'
+                                                } only %}
                                             </div>
                                             <div class="info-content">
                                                 <p>Return policy (edit with Customer reassurance module)</p>

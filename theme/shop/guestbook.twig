@@ -75,25 +75,22 @@
                 </div>
 
                 {% if messages.count() %}
-                <section class="blog-area blog-grid-area">
+                    <section class="review-area review-grid-area mb-40 mt-50">
                     <div class="container">
-                        <h4 class="mb-2">Other reviews</h4>
+                        <h3 class="mb-2 text-center">Reviews</h3>
                         <div class="row">
                             <div class="col-lg-12">
-                                <div class="blog-content-area">
-                                    <div class="row">
+                                <div class="review-content-area">
+                                    <div class="product-review">
                                         {% for item in messages.sortByDesc('date') %}
-                                        <div class="col-lg-4 col-md-6 col-sm-6">
-                                            <!--== Start Blog Post Item ==-->
-                                            <div class="post-item2 border">
-                                                <div class="content pl-3">
-                                                    <div class="post-meta "><span class="post-category">by <span class="category">{{ item.name }}</span></span><span class="post-date">{{ item.date|df }}</span></div>
-                                                    <h4 class="title text-center">{{ item.message|raw|nl2br }}</h4>
-                                                    <p class="fst-italic text-end">{{ item.response|raw|nl2br }}</p>
+                                            <div class="review-content">
+                                                <div class="review-item">
+                                                    <h4 class="title">{{ item.name }}</h4>
+                                                    <h5 class="review-date"><span>{{ item.name }}</span> on <span>{{ item.date|df }}</span></h5>
+                                                    <p>{{ item.message|raw|nl2br }}</p>
+                                                    <p class="text-end ">{{ item.response|raw|nl2br }}</p>
                                                 </div>
                                             </div>
-                                            <!--== End Blog Post Item ==-->
-                                        </div>
                                         {% endfor %}
                                     </div>
                                 </div>

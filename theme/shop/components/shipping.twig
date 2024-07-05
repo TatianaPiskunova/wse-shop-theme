@@ -6,7 +6,11 @@
                 <div class="col-lg-3 col-md-6 col-sm-6">
                     <div class="featured-item">
                         <div class="icon">
-                            <img src="/resource/img/delivery.webp" alt="Image" width="40" height="28">
+                            {% include 'mixin/img.twig' with {
+                                'src': "/resource/img/delivery.webp",
+                                'alt': 'delivery',
+                                'style': 'height: 28px; width=40px; object-fit: contain;'
+                            } only %}
                         </div>
                         <div class="media-body">
                             <h6>Free Shipping</h6>
@@ -17,7 +21,11 @@
                 <div class="col-lg-3 col-md-6 col-sm-6">
                     <div class="featured-item">
                         <div class="icon">
-                            <img src="/resource/img/support.webp" alt="Image" width="40" height="35">
+                            {% include 'mixin/img.twig' with {
+                                'src': "/resource/img/support.webp",
+                                'alt': 'support',
+                                'style': 'height: 35px; width=40px; object-fit: contain;'
+                            } only %}
                         </div>
                         <div class="media-body">
                             <h6>24/7 Support</h6>
@@ -28,7 +36,11 @@
                 <div class="col-lg-3 col-md-6 col-sm-6">
                     <div class="featured-item">
                         <div class="icon">
-                            <img src="/resource/img/payment.webp" alt="Image" width="40" height="33">
+                            {% include 'mixin/img.twig' with {
+                                'src': "/resource/img/payment.webp",
+                                'alt': 'payment',
+                                'style': 'height: 33px; width=40px; object-fit: contain;'
+                            } only %}
                         </div>
                         <div class="media-body">
                             <h6>Online Payment</h6>
@@ -39,7 +51,11 @@
                 <div class="col-lg-3 col-md-6 col-sm-6">
                     <div class="featured-item">
                         <div class="icon" >
-                            <img src="/resource/img/return.webp" alt="Image" width="40" height="30">
+                            {% include 'mixin/img.twig' with {
+                                'src': "/resource/img/return.webp",
+                                'alt': 'payment',
+                                'style': 'height: 30px; width=40px; object-fit: contain;'
+                            } only %}
                         </div>
                         <div class="media-body">
                             <h6>Easy Return</h6>

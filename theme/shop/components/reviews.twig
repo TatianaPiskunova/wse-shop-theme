@@ -18,14 +18,13 @@
                     <div class="swiper-wrapper">
                         {% for review in allReviews %}
                         <div class="swiper-slide" >
-                            <div class="testimonial-item">
+                            <div class="testimonial-item d-flex flex-column justify-content-between">
                                 <p>{{ review.message }}</p>
-                                <img class="quote-icon" src="http://placehold.it/252x191/" alt="Icon" width="252" height="191">
-
-                                    <h4  class=" text-end"><i class="fa-regular fa-user"></i> {{ review.name }}</h4>
-                                    <h4  class=" text-end">{{ review.date|date("d.m.Y") }}</h4>
-
-                                <h6 class=" text-start fst-italic">{{ review.response }}</h6>
+                                <div>
+                                    <h4 class="text-end "><i class="fa-regular fa-user"></i> {{ review.name }}</h4>
+                                    <h4 class="text-end ">{{ review.date|date("d.m.Y") }}</h4>
+                                    <h6 class="text-start fst-italic">{{ review.response }}</h6>
+                                </div>
                             </div>
                         </div>
                         {% endfor %}
@@ -35,3 +34,8 @@
         </div>
     </div>
 </section>
+<style>
+    .testimonial-item {
+        height: 220px;
+    }
+</style>

@@ -11963,3 +11963,38 @@ table p {
 .tmpInput{
     justify-content: space-between;
 }
+
+
+.review-content-area .product-review .review-content {
+    border: 1px solid #ECECEC;
+    padding: 24px;
+    margin-top: 15px;
+}
+
+@media only screen and (max-width: 767px) {
+    .review-content-area  .tab-content .product-review .review-header .title {
+        font-size: 18px;
+    }
+}
+
+.review-content-area .product-review .review-content .review-item .title {
+    font-size: 16px;
+    line-height: 1;
+    margin-bottom: 21px;
+}
+.review-content-area .product-review .review-content .review-item .review-date {
+    font-style: italic;
+    font-size: 13px;
+    opacity: 0.5;
+    display: inline-block;
+    margin-bottom: 15px;
+}
+.review-content-area .product-review .review-content .review-item .review-date span {
+    font-weight: 700;
+}
+.review-content-area .product-review .review-content .review-item p {
+    font-size: 13px;
+    margin-bottom: 20px;
+}
+
+

@@ -1,5 +1,5 @@
 <!-- Start Home Product List -->
-{% set bestSellers = catalog_product_popular(5) %}
+{% set bestSellers = catalog_product_popular(15) %}
 {% set newProducts=catalog_product([], {'date': 'desc'}, 5,null) %}
 
 <section class="product-area product-style3-area">
@@ -17,10 +17,28 @@
                 <div class="product-tab-content">
                     <ul class="nav nav-tabs " id="myTab" role="tablist">
                         <li class="nav-item" role="presentation">
-                            <button class="nav-link active" id="our-features-tab" data-bs-toggle="tab" data-bs-target="#our-features" type="button" role="tab" aria-controls="our-features" aria-selected="true"><img src="http://dummyimage.com/65x65/7B68EE" alt="Image" width="65" height="65">New Arrivals</button>
+                            <button class="nav-link active" id="our-features-tab" data-bs-toggle="tab"
+                                    data-bs-target="#our-features" type="button" role="tab" aria-controls="our-features"
+                                    aria-selected="true">
+                                {% include 'mixin/img.twig' with {
+                                    'src': 'http://dummyimage.com/65x65/7B68EE',
+                                    'alt': 'foto',
+                                    'style': 'height: 65px; width=65px; object-fit: contain;'
+                                } only %}
+                              New Arrivals
+                            </button>
                         </li>
                         <li class="nav-item" role="presentation">
-                            <button class="nav-link" id="best-sellers-tab" data-bs-toggle="tab" data-bs-target="#best-sellers" type="button" role="tab" aria-controls="best-sellers" aria-selected="false"><img src="http://dummyimage.com/65x65/9932CC" alt="Image" width="65" height="65">Best sellers</button>
+                            <button class="nav-link" id="best-sellers-tab" data-bs-toggle="tab"
+                                    data-bs-target="#best-sellers" type="button" role="tab" aria-controls="best-sellers"
+                                    aria-selected="false">
+                                {% include 'mixin/img.twig' with {
+                                    'src': 'http://dummyimage.com/65x65/9932CC',
+                                    'alt': 'foto',
+                                    'style': 'height: 65px; width=65px; object-fit: contain;'
+                                } only %}
+                                Best sellers
+                            </button>
                         </li>
                     </ul>
 

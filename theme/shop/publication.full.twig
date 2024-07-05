@@ -13,7 +13,7 @@
 
 {% block page %}
     {% include 'common/breadcrumbs.twig' with {
-        'parents': [category.meta.title ? category.meta.title : category.title],
+        'parents':  publication.category,
         'title': publication.meta.title ? publication.meta.title : publication.title
     } %}
 

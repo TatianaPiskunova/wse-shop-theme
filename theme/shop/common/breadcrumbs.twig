@@ -8,25 +8,33 @@
                     <div class="bread-crumbs">
                         <a href="/">Home</a>
                         {% if catalog %}
-                        <span class="breadcrumb-sep">
+                            <span class="breadcrumb-sep">
                             <i class="fa-solid fa-angle-right"></i></span><span>
                             <a href="/catalog">{{ catalog }}</a></span>
-
                         {% endif %}
 
-                            {% for item in parents|reverse() %}
+                        {% if parents.title %}
+                            <span class="breadcrumb-sep">
+                            <i class="fa-solid fa-angle-right"></i></span>
+                            <span>
+                                    <a href="/{{ parents.address }}">{{ parents.title }}</a>
+                                </span>
+                        {% endif %}
 
-                                {% if item.title %}
-                                    <span class="breadcrumb-sep">
-                            <i class="fa-solid fa-angle-right"></i></span><span>
-                                        <a href="/catalog/{{ item.address }}">{{ item.title }}</a>
-                                    </span>
-                                {% else %}
-                                    <span class="breadcrumb-sep">
+                        {% for item in parents|reverse() %}
+
+                            {% if item.title %}
+                                <span class="breadcrumb-sep">
+                            <i class="fa-solid fa-angle-right"></i></span>
+                                <span>
+                                    <a href="/catalog/{{ item.address }}">{{ item.title }}</a>
+                                </span>
+                            {% else %}
+                                <span class="breadcrumb-sep">
                             <i class="fa-solid fa-angle-right"></i></span><span>{{ item }}</span>
-                                {% endif %}
+                            {% endif %}
 
-                            {% endfor %}
+                        {% endfor %}
 
                         {% if title %}
                             <span class="breadcrumb-sep">

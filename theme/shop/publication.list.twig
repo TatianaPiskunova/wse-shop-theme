@@ -16,21 +16,14 @@
 
     <!-- Start Blog Singel Area -->
 
-    {% set public=publication({category_uuid: '9c4c903c-c69f-4efc-825e-31a08a5a2f01'}) %}
-
-    {% if category.uuid=='9c4c906a-7ad5-4c2c-bf3d-d3e4e6828d47' %}
-        {% set public=publication({category_uuid: '9c4c906a-7ad5-4c2c-bf3d-d3e4e6828d47'}) %}
-    {% endif %}
-
     <section class="blog-area blog-grid-area">
         <div class="container">
             <div class="row">
                 <div class="col-lg-12">
                     <div class="blog-content-area">
                         <div class="row">
-
                             <!--== Start Blog Post Item ==-->
-                            {% for publication in public %}
+                            {% for publication in publications %}
                                 <div class="col-lg-4 col-md-6 col-sm-6">
                                     <div class="post-item2">
                                         <div class="thumb effect-animate-flash">
